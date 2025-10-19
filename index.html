@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🐝 Bee Story - Chương 1</title>
+    <style>
+      /* Animation cho ong nhỏ */
+      @keyframes bee-float1 {
+        0% {
+          transform: translateY(0) scale(1) rotate(-8deg);
+        }
+        30% {
+          transform: translateY(-18px) scale(1.05) rotate(8deg);
+        }
+        60% {
+          transform: translateY(8px) scale(0.98) rotate(-6deg);
+        }
+        100% {
+          transform: translateY(0) scale(1) rotate(-8deg);
+        }
+      }
+      @keyframes bee-float2 {
+        0% {
+          transform: translateY(0) scale(1) rotate(10deg);
+        }
+        25% {
+          transform: translateY(-12px) scale(1.04) rotate(-10deg);
+        }
+        60% {
+          transform: translateY(10px) scale(0.97) rotate(6deg);
+        }
+        100% {
+          transform: translateY(0) scale(1) rotate(10deg);
+        }
+      }
+      .bee1 {
+        animation: bee-float1 7s ease-in-out infinite;
+      }
+      .bee2 {
+        animation: bee-float2 8s ease-in-out infinite;
+      }
+
+      /* Animation cho hoa, lá, cỏ */
+      @keyframes sway1 {
+        0% {
+          transform: rotate(-2deg) scale(1);
+        }
+        50% {
+          transform: rotate(3deg) scale(1.03);
+        }
+        100% {
+          transform: rotate(-2deg) scale(1);
+        }
+      }
+      @keyframes sway2 {
+        0% {
+          transform: rotate(2deg) scale(1);
+        }
+        50% {
+          transform: rotate(-3deg) scale(1.02);
+        }
+        100% {
+          transform: rotate(2deg) scale(1);
+        }
+      }
+      .flower1,
+      .leaf1,
+      .grass1 {
+        animation: sway1 5.5s ease-in-out infinite;
+      }
+      .flower2,
+      .leaf2,
+      .grass2 {
+        animation: sway2 6.2s ease-in-out infinite;
+      }
+      body {
+        background: linear-gradient(to bottom, #fef9d7, #ffd6a5);
+        font-family: "Comic Sans MS", "Segoe UI", system-ui, -apple-system,
+          sans-serif;
+        text-align: center;
+        overflow: hidden;
+        color: #553311;
+      }
+      #panel {
+        position: relative;
+        width: min(92vw, 780px);
+        height: min(60vh, 520px);
+        margin: 60px auto 0;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 12px 24px rgba(85, 51, 17, 0.25);
+        background: #fff7e6;
+      }
+      #panel img.scene-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: grayscale(0.1) saturate(1.15) contrast(1.1);
+      }
+      /* manga screentone overlay */
+      #panel::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(
+          rgba(0, 0, 0, 0.08) 1px,
+          transparent 1px
+        );
+        background-size: 6px 6px;
+        pointer-events: none;
+        mix-blend-mode: multiply;
+      }
+      #story {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 18px 20px 22px;
+        background: linear-gradient(
+          to top,
+          rgba(255, 247, 230, 0.95),
+          rgba(255, 247, 230, 0.75),
+          rgba(255, 247, 230, 0)
+        );
+        font-size: 1.25em;
+        line-height: 1.6;
+        min-height: 96px;
+        opacity: 0;
+        transition: opacity 800ms;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+      }
+      .controls {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 24px;
+      }
+      .controls button {
+        padding: 12px 22px;
+        border: none;
+        border-radius: 10px;
+        background: #ffcc33;
+        font-size: 1.05em;
+        box-shadow: 0 4px #cc9900;
+        cursor: pointer;
+        min-width: 110px;
+      }
+      .controls button:hover {
+        background: #ffe066;
+      }
+      .controls button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      .progress {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        display: flex;
+        gap: 6px;
+        z-index: 2;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.15);
+        box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+        transition: transform 120ms ease;
+      }
+      .dot.active {
+        background: #ffcc33;
+        transform: scale(1.1);
+      }
+      /* inline SVG bee */
+      .bee-wrap {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        top: 30%;
+        left: -100px;
+        animation: fly 12s linear infinite;
+        pointer-events: none;
+      }
+      @keyframes fly {
+        0% {
+          left: -100px;
+          top: 30%;
+          transform: rotate(10deg) scale(1);
+        }
+        25% {
+          left: 40%;
+          top: 18%;
+          transform: rotate(-8deg) scale(1.05);
+        }
+        50% {
+          left: 85%;
+          top: 36%;
+          transform: rotate(12deg) scale(1);
+        }
+        75% {
+          left: 48%;
+          top: 52%;
+          transform: rotate(-6deg) scale(0.98);
+        }
+        100% {
+          left: -100px;
+          top: 30%;
+          transform: rotate(10deg) scale(1);
+        }
+      }
+      .hint {
+        color: rgba(85, 51, 17, 0.75);
+        font-size: 0.95em;
+        margin-top: 12px;
+      }
+      @media (max-width: 520px) {
+        #panel {
+          height: min(58vh, 460px);
+        }
+        .controls button {
+          min-width: 96px;
+          padding: 10px 16px;
+          font-size: 1em;
+        }
+        #story {
+          font-size: 1.1em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Ong lớn bay -->
+    <div class="bee-wrap" aria-hidden="true">
+      <svg viewBox="0 0 120 120" width="80" height="80">
+        <defs>
+          <linearGradient id="wing" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity=".9" />
+            <stop offset="100%" stop-color="#c7f3ff" stop-opacity=".7" />
+          </linearGradient>
+        </defs>
+        <g transform="translate(10,20)">
+          <ellipse
+            cx="25"
+            cy="20"
+            rx="18"
+            ry="12"
+            fill="url(#wing)"
+            stroke="#333"
+            stroke-width="2"
+            opacity=".9"
+          >
+            <animate
+              attributeName="rx"
+              values="18;16;18"
+              dur="1.2s"
+              repeatCount="indefinite"
+            />
+          </ellipse>
+          <ellipse
+            cx="40"
+            cy="16"
+            rx="14"
+            ry="10"
+            fill="url(#wing)"
+            stroke="#333"
+            stroke-width="2"
+            opacity=".85"
+          >
+            <animate
+              attributeName="ry"
+              values="10;8;10"
+              dur="1.2s"
+              repeatCount="indefinite"
+            />
+          </ellipse>
+          <ellipse
+            cx="58"
+            cy="38"
+            rx="28"
+            ry="20"
+            fill="#ffd34d"
+            stroke="#333"
+            stroke-width="3"
+          />
+          <rect x="40" y="25" width="36" height="8" fill="#333" />
+          <rect x="42" y="40" width="36" height="8" fill="#333" />
+          <circle cx="78" cy="36" r="8" fill="#333" />
+          <circle cx="82" cy="34" r="2" fill="#fff" />
+          <path d="M86,34 l16,-6" stroke="#333" stroke-width="3" />
+        </g>
+      </svg>
+    </div>
+
+      <svg viewBox="0 0 120 120" width="80" height="80">
+        <defs>
+          <linearGradient id="wing" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity=".9" />
+            <stop offset="100%" stop-color="#c7f3ff" stop-opacity=".7" />
+          </linearGradient>
+        </defs>
+        <g transform="translate(10,20)">
+          <ellipse
+            cx="25"
+            cy="20"
+            rx="18"
+            ry="12"
+            fill="url(#wing)"
+            stroke="#333"
+            stroke-width="2"
+            opacity=".9"
+          >
+            <animate
+              attributeName="rx"
+              values="18;16;18"
+              dur="1.2s"
+              repeatCount="indefinite"
+            />
+          </ellipse>
+          <ellipse
+            cx="40"
+            cy="16"
+            rx="14"
+            ry="10"
+            fill="url(#wing)"
+            stroke="#333"
+            stroke-width="2"
+            opacity=".85"
+          >
+            <animate
+              attributeName="ry"
+              values="10;8;10"
+              dur="1.2s"
+              repeatCount="indefinite"
+            />
+          </ellipse>
+          <ellipse
+            cx="58"
+            cy="38"
+            rx="28"
+            ry="20"
+            fill="#ffd34d"
+            stroke="#333"
+            stroke-width="3"
+          />
+          <rect x="40" y="25" width="36" height="8" fill="#333" />
+          <rect x="42" y="40" width="36" height="8" fill="#333" />
+          <circle cx="78" cy="36" r="8" fill="#333" />
+          <circle cx="82" cy="34" r="2" fill="#fff" />
+          <path d="M86,34 l16,-6" stroke="#333" stroke-width="3" />
+        </g>
+      </svg>
+    </div>
+
+    
+    <div id="panel">
+      <div class="progress" id="progress"></div>
+      <img id="sceneImg" class="scene-img" src="" alt="scene" />
+      <div id="story" role="status" aria-live="polite" aria-atomic="true"></div>
+    </div>
+    <div class="controls" aria-label="điều khiển câu chuyện">
+      <button
+        id="prevBtn"
+        onclick="prevPart()"
+        aria-label="Lùi lại (←)"
+        disabled
+      >
+        ← Lùi
+      </button>
+      <button
+        id="nextBtn"
+        onclick="nextPart()"
+        aria-label="Tiếp (Space/Enter/→)"
+      >
+        Tiếp ➜
+      </button>
+    </div>
+    <div class="hint">
+      Nhấn Space/Enter/→ để tiếp tục nha hâmmm, ← để quay lại. Bấm vào khung để bỏ
+      qua hiệu ứng chữ.
+    </div>
+
+    <script>
+      // Simple inline SVG chibi scenes (data URIs) for a manga/chibi vibe
+      const svg1 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <defs>
+              <linearGradient id='bg' x1='0' y1='0' x2='0' y2='1'>
+                <stop offset='0%' stop-color='%23fff6e5'/>
+                <stop offset='100%' stop-color='%23ffe0b3'/>
+              </linearGradient>
+              <filter id='outline'><feMorphology operator='dilate' radius='3'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter>
+            </defs>
+            <rect width='100%' height='100%' fill='url(%23bg)'/>
+            <!-- chibi boy -->
+            <g transform='translate(350,160)'>
+              <circle cx='250' cy='160' r='120' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <circle cx='210' cy='160' r='14' fill='%23222'/>
+              <circle cx='290' cy='160' r='14' fill='%23222'/>
+              <path d='M200,210 Q250,240 300,210' stroke='%23222' stroke-width='8' fill='none'/>
+              <rect x='140' y='280' rx='40' ry='40' width='220' height='260' fill='%23ffd777' stroke='%23222' stroke-width='6'/>
+              <rect x='250' y='310' rx='12' ry='12' width='120' height='70' fill='%23222'/>
+              <rect x='270' y='325' rx='8' ry='8' width='80' height='40' fill='%23333'/>
+              <path d='M245,320 q-40 20 -45 70' stroke='%23222' stroke-width='8' fill='none'/>
+            </g>
+          </svg>`;
+
+      const svg2 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23fff6e5'/>
+            <g transform='translate(150,120)'>
+              <rect x='500' y='140' rx='24' ry='24' width='300' height='520' fill='%23ffffff' stroke='%23222' stroke-width='8'/>
+              <circle cx='650' cy='220' r='70' fill='%23ffe066' stroke='%23222' stroke-width='8'/>
+              <path d='M600,210 q40 -30 100 0' fill='none' stroke='%23222' stroke-width='8'/>
+              <path d='M620,245 q30 20 60 0' fill='none' stroke='%23222' stroke-width='8'/>
+              <text x='565' y='340' font-family='Comic Sans MS' font-size='28' fill='%23222'>🍃Tớ Là Oong🐝</text>
+            </g>
+            <g transform='translate(220,200)'>
+              <circle cx='200' cy='120' r='90' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <circle cx='170' cy='120' r='12' fill='%23222'/>
+              <circle cx='230' cy='120' r='12' fill='%23222'/>
+              <path d='M160,160 q40 20 80 0' stroke='%23222' stroke-width='8' fill='none'/>
+            </g>
+          </svg>`;
+
+      const svg3 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23ffeedd'/>
+            <g transform='translate(340,160)'>
+              <circle cx='250' cy='160' r='120' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <circle cx='210' cy='160' r='12' fill='%23222'/>
+              <circle cx='290' cy='160' r='12' fill='%23222'/>
+              <path d='M205,205 q45 35 90 0' stroke='%23222' stroke-width='8' fill='none'/>
+              <circle cx='190' cy='185' r='10' fill='%23ff9bb3'/>
+              <circle cx='310' cy='185' r='10' fill='%23ff9bb3'/>
+              <rect x='160' y='290' rx='40' ry='40' width='220' height='260' fill='%23ffd777' stroke='%23222' stroke-width='6'/>
+            </g>
+          </svg>`;
+
+      const svg4 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23fff6e5'/>
+            <!-- calendar card -->
+            <g transform='translate(400,160)'>
+              <rect x='0' y='0' rx='24' ry='24' width='400' height='360' fill='%23ffffff' stroke='%23222' stroke-width='8'/>
+              <rect x='0' y='0' rx='24' ry='24' width='400' height='90' fill='%23ff6b6b' stroke='%23222' stroke-width='8'/>
+              <text x='200' y='60' text-anchor='middle' font-family='Comic Sans MS' font-size='40' fill='%23ffffff'>Lịch</text>
+              <text x='200' y='210' text-anchor='middle' font-family='Comic Sans MS' font-size='80' fill='%23222'>2</text>
+              <text x='200' y='260' text-anchor='middle' font-family='Comic Sans MS' font-size='34' fill='%23222'>tháng sau...</text>
+            </g>
+            <!-- small boy thinking in corner -->
+            <g transform='translate(140,420) scale(0.7)'>
+              <circle cx='250' cy='160' r='120' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <circle cx='210' cy='160' r='12' fill='%23222'/>
+              <circle cx='290' cy='160' r='12' fill='%23222'/>
+              <path d='M205,205 q45 35 90 0' stroke='%23222' stroke-width='8' fill='none'/>
+              <rect x='160' y='290' rx='40' ry='40' width='220' height='260' fill='%23ffd777' stroke='%23222' stroke-width='6'/>
+            </g>
+          </svg>`;
+
+      const svg5 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23fff6e5'/>
+            <g transform='translate(320,160)'>
+              <circle cx='250' cy='160' r='120' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <circle cx='210' cy='160' r='12' fill='%23222'/>
+              <circle cx='290' cy='160' r='12' fill='%23222'/>
+              <path d='M200,210 Q250,235 300,210' stroke='%23222' stroke-width='8' fill='none'/>
+              <rect x='160' y='290' rx='40' ry='40' width='220' height='260' fill='%23ffd777' stroke='%23222' stroke-width='6'/>
+            </g>
+            <!-- message bubble -->
+            <g>
+              <rect x='740' y='180' rx='20' ry='20' width='360' height='180' fill='%23ffffff' stroke='%23222' stroke-width='6'/>
+              <path d='M820,360 l-20,50 60,-40' fill='%23ffffff' stroke='%23222' stroke-width='6'/>
+              <text x='760' y='230' font-family='Comic Sans MS' font-size='30' fill='%23222'>Chào Oong,</text>
+              <text x='760' y='270' font-family='Comic Sans MS' font-size='30' fill='%23222'>tớ là Nam... 😊</text>
+            </g>
+          </svg>`;
+
+      const svg6 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23eafff6'/>
+            <!-- phone right -->
+            <g transform='translate(760,120)'>
+              <rect x='0' y='0' rx='24' ry='24' width='320' height='560' fill='%23ffffff' stroke='%23222' stroke-width='8'/>
+              <rect x='24' y='60' rx='18' ry='18' width='260' height='100' fill='%23f4f4f4' stroke='%23222' stroke-width='6'/>
+              <text x='42' y='120' font-family='Comic Sans MS' font-size='28' fill='%23222'>Chào bạn~ 🐝</text>
+            </g>
+            <!-- chibi boy happy -->
+            <g transform='translate(220,220)'>
+              <circle cx='200' cy='120' r='90' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <circle cx='170' cy='110' r='12' fill='%23222'/>
+              <circle cx='230' cy='110' r='12' fill='%23222'/>
+              <path d='M160,150 q40 30 80 0' stroke='%23222' stroke-width='8' fill='none'/>
+              <circle cx='145' cy='95' r='8' fill='%23ffafcc'/>
+              <circle cx='255' cy='95' r='8' fill='%23ffafcc'/>
+              <g opacity='0.8'>
+                <circle cx='120' cy='10' r='6' fill='%23ffd166'/>
+                <circle cx='260' cy='-10' r='5' fill='%23ffd166'/>
+                <circle cx='200' cy='-20' r='4' fill='%23ffd166'/>
+              </g>
+            </g>
+          </svg>`;
+
+      const svg7 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23f0fff4'/>
+            <!-- icons montage: leaf, paw, mountain, compass -->
+            <g transform='translate(180,220)'>
+              <path d='M60,140 q60 -120 160 -120 q-40 120 -160 120 z' fill='%2328a745' stroke='%23222' stroke-width='6'/>
+              <circle cx='280' cy='80' r='26' fill='%23222'/>
+              <circle cx='312' cy='62' r='16' fill='%23222'/>
+              <circle cx='328' cy='92' r='16' fill='%23222'/>
+              <circle cx='296' cy='106' r='16' fill='%23222'/>
+              <circle cx='310' cy='120' r='20' fill='%23222'/>
+              <g transform='translate(420,-10)'>
+                <polygon points='0,160 120,20 240,160' fill='%2397c1a9' stroke='%23222' stroke-width='6'/>
+                <polygon points='60,160 120,90 180,160' fill='%23cde6d0' stroke='%23222' stroke-width='6'/>
+              </g>
+              <g transform='translate(720,0)'>
+                <circle cx='80' cy='80' r='70' fill='%23fff' stroke='%23222' stroke-width='6'/>
+                <polygon points='80,20 95,85 160,100 95,115 80,180 65,115 0,100 65,85' fill='%23ffcc33' stroke='%23222' stroke-width='6'/>
+              </g>
+            </g>
+          </svg>`;
+
+      const svg8 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23eef2ff'/>
+            <!-- two phones far apart -->
+            <g transform='translate(120,160)'>
+              <rect x='0' y='0' rx='24' ry='24' width='260' height='520' fill='%23ffffff' stroke='%23222' stroke-width='8'/>
+              <rect x='24' y='60' rx='18' ry='18' width='200' height='60' fill='%23f4f4f4' stroke='%23222' stroke-width='6'/>
+            </g>
+            <g transform='translate(820,160)'>
+              <rect x='0' y='0' rx='24' ry='24' width='260' height='520' fill='%23ffffff' stroke='%23222' stroke-width='8'/>
+              <rect x='24' y='380' rx='18' ry='18' width='200' height='60' fill='%23f4f4f4' stroke='%23222' stroke-width='6'/>
+            </g>
+            <path d='M380,420 C560,220 640,620 880,420' fill='none' stroke='%23999' stroke-dasharray='10 10' stroke-width='6'>
+              <animate attributeName='stroke-dashoffset' values='0;20;0' dur='2s' repeatCount='indefinite' />
+            </path>
+            <circle cx='380' cy='420' r='8' fill='%23ffcc33'/>
+            <circle cx='880' cy='420' r='8' fill='%23ffcc33'/>
+          </svg>`;
+
+      const svg9 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23ffe6ea'/>
+            <g transform='translate(320,180)'>
+              <path d='M240,220 c-40 -80 -160 -80 -160,30 c0,90 120,150 160,190 c40 -40 160 -100 160 -190 c0 -110 -120 -110 -160 -30z' fill='%23ff8fab' stroke='%23222' stroke-width='6'>
+                <animate attributeName='opacity' values='1;0.85;1' dur='1.6s' repeatCount='indefinite' />
+                <animateTransform attributeName='transform' type='scale' values='1;1.02;1' dur='1.6s' repeatCount='indefinite' additive='sum' />
+              </path>
+            </g>
+            <g transform='translate(380,200) scale(0.9)'>
+              <circle cx='250' cy='160' r='120' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <circle cx='210' cy='160' r='12' fill='%23222'/>
+              <circle cx='290' cy='160' r='12' fill='%23222'/>
+              <path d='M205,205 q45 35 90 0' stroke='%23222' stroke-width='8' fill='none'/>
+              <rect x='160' y='290' rx='40' ry='40' width='220' height='260' fill='%23ffd777' stroke='%23222' stroke-width='6'/>
+            </g>
+            <g transform='translate(540,180)'>
+              <circle cx='0' cy='0' r='20' fill='%23ffd166' stroke='%23222' stroke-width='4'/>
+              <path d='M-10,-10 q10 -12 20 0' stroke='%23222' stroke-width='4' fill='none'/>
+            </g>
+          </svg>`;
+
+      /* Chapter 2 SVGs */
+      const svg10 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23fff3cd'/>
+            <g transform='translate(180,180)'>
+              <rect x='0' y='0' rx='24' ry='24' width='840' height='360' fill='%23ffffff' stroke='%23222' stroke-width='8'/>
+              <text x='420' y='150' text-anchor='middle' font-family='Comic Sans MS' font-size='56' fill='%23222'>Chương 2</text>
+              <text x='420' y='220' text-anchor='middle' font-family='Comic Sans MS' font-size='34' fill='%23222'>Sự tự ti & bức tường của cô gái</text>
+            </g>
+          </svg>`;
+
+      const svg11 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23eef2f7'/>
+            <!-- site -->
+            <g transform='translate(120,160)'>
+              <rect x='0' y='180' width='960' height='200' fill='%23cfd8dc' stroke='%23222' stroke-width='6'/>
+              <rect x='60' y='120' width='180' height='60' fill='%2390a4ae' stroke='%23222' stroke-width='6'/>
+              <rect x='260' y='80' width='220' height='100' fill='%2390a4ae' stroke='%23222' stroke-width='6'/>
+              <rect x='520' y='140' width='280' height='60' fill='%2390a4ae' stroke='%23222' stroke-width='6'/>
+              <line x1='780' y1='60' x2='1020' y2='60' stroke='%23222' stroke-width='6'/>
+              <rect x='1000' y='40' width='20' height='20' fill='%23222'/>
+            </g>
+            <!-- girl with helmet, long hair -->
+            <g transform='translate(420,260)'>
+              <ellipse cx='80' cy='60' rx='38' ry='44' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <path d='M42,60 q38 80 76 0' fill='none' stroke='%23996b4e' stroke-width='8'/>
+              <rect x='42' y='38' width='76' height='16' fill='%23ffcc33' stroke='%23222' stroke-width='6'/>
+              <rect x='40' y='100' rx='20' ry='20' width='90' height='120' fill='%23ffd777' stroke='%23222' stroke-width='6'/>
+              <rect x='70' y='120' width='30' height='50' fill='%23333'/>
+              <!-- long hair -->
+              <path d='M60,104 q-30 60 40 80 q-40 -40 -10 -80' fill='%23996b4e' stroke='%23222' stroke-width='4'/>
+            </g>
+          </svg>`;
+
+      const svg12 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23fff6e5'/>
+            <g transform='translate(180,200)'>
+              <circle cx='120' cy='120' r='80' fill='%23fff' stroke='%23222' stroke-width='6'/>
+              <line x1='120' y1='120' x2='120' y2='70' stroke='%23222' stroke-width='6'/>
+              <line x1='120' y1='120' x2='170' y2='120' stroke='%23222' stroke-width='6'/>
+              <text x='120' y='220' text-anchor='middle' font-family='Comic Sans MS' font-size='26' fill='%23222'>Sáng sớm</text>
+            </g>
+            <g transform='translate(760,200)'>
+              <circle cx='120' cy='120' r='80' fill='%23fff' stroke='%23222' stroke-width='6'/>
+              <line x1='120' y1='120' x2='80' y2='120' stroke='%23222' stroke-width='6'/>
+              <line x1='120' y1='120' x2='120' y2='170' stroke='%23222' stroke-width='6'/>
+              <text x='120' y='220' text-anchor='middle' font-family='Comic Sans MS' font-size='26' fill='%23222'>Khuya muộn</text>
+            </g>
+            <path d='M360,280 C480,200 720,200 840,280' stroke='%23999' stroke-dasharray='10 10' stroke-width='6' fill='none'/>
+            <text x='600' y='360' text-anchor='middle' font-family='Comic Sans MS' font-size='28' fill='%23222'>Ngày nối ngày</text>
+          </svg>`;
+
+      const svg13 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23eaf7ff'/>
+            <g transform='translate(780,140)'>
+              <rect x='0' y='0' rx='24' ry='24' width='320' height='560' fill='%23ffffff' stroke='%23222' stroke-width='8'/>
+              <rect x='24' y='380' rx='18' ry='18' width='260' height='110' fill='%23f4f4f4' stroke='%23222' stroke-width='6'/>
+              <text x='42' y='440' font-family='Comic Sans MS' font-size='26' fill='%23222'>Vẫn trả lời tin nhắn...</text>
+              <text x='42' y='470' font-family='Comic Sans MS' font-size='22' fill='%23999'>mệt nhưng ấm lòng</text>
+            </g>
+            <!-- girl in small room, long hair -->
+            <g transform='translate(220,240)'>
+              <ellipse cx='200' cy='120' rx='60' ry='90' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <path d='M140,120 q60 80 120 0' fill='none' stroke='%23996b4e' stroke-width='10'/>
+              <path d='M160,180 q-30 40 40 60 q-40 -30 -10 -60' fill='%23996b4e' stroke='%23222' stroke-width='4'/>
+              <path d='M240,180 q30 40 -40 60 q40 -30 10 -60' fill='%23996b4e' stroke='%23222' stroke-width='4'/>
+              <text x='160' y='220' font-family='Comic Sans MS' font-size='28' fill='%23999'>zzz</text>
+            </g>
+          </svg>`;
+
+      const svg14 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23fff0f0'/>
+            <g transform='translate(220,220)'>
+              <circle cx='140' cy='100' r='70' fill='%23fff' stroke='%23222' stroke-width='6'/>
+              <path d='M90,120 h100' stroke='%23e74c3c' stroke-width='10'/>
+              <text x='140' y='200' text-anchor='middle' font-family='Comic Sans MS' font-size='26' fill='%23222'>Bỏ bữa</text>
+            </g>
+            <g transform='translate(700,200)'>
+              <rect x='0' y='0' rx='24' ry='24' width='260' height='200' fill='%23e3f2fd' stroke='%23222' stroke-width='6'/>
+              <path d='M40,60 q40 -20 80 0' stroke='%2399c' stroke-width='6' fill='none'/>
+              <line x1='180' y1='40' x2='180' y2='160' stroke='%23222' stroke-width='6'/>
+              <line x1='180' y1='100' x2='220' y2='100' stroke='%23222' stroke-width='6'/>
+              <text x='130' y='170' text-anchor='middle' font-family='Comic Sans MS' font-size='22' fill='%23222'>Tắm muộn</text>
+            </g>
+          </svg>`;
+
+      const svg15 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23eaf7ff'/>
+            <!-- girl crying, long hair -->
+            <g transform='translate(340,200)'>
+              <ellipse cx='250' cy='100' rx='90' ry='110' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <path d='M160,100 q90 120 180 0' fill='none' stroke='%23996b4e' stroke-width='12'/>
+              <path d='M220,130 q30 30 60 0' stroke='%23222' stroke-width='8' fill='none'/>
+              <g>
+                <path d='M210,50 q-20 30 -40 0' stroke='%23222' stroke-width='6' fill='none'/>
+                <path d='M290,50 q20 30 40 0' stroke='%23222' stroke-width='6' fill='none'/>
+              </g>
+              <g transform='translate(0,140)'>
+                <path d='M180,0 q30 50 60 0' fill='none' stroke='%2388c' stroke-width='8'/>
+              </g>
+              <!-- tears -->
+              <ellipse cx='220' cy='160' rx='8' ry='16' fill='%2399d' opacity='0.5'/>
+              <ellipse cx='280' cy='160' rx='8' ry='16' fill='%2399d' opacity='0.5'/>
+            </g>
+            <text x='600' y='520' text-anchor='middle' font-family='Comic Sans MS' font-size='34' fill='%23222'>Khóc nhiều lần — nhưng vẫn rất mạnh mẽ.</text>
+          </svg>`;
+
+      const svg16 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23fef6e4'/>
+            <!-- girl inside wall, long hair -->
+            <g transform='translate(300,180)'>
+              <rect x='0' y='0' width='600' height='360' fill='%23f1c40f' opacity='0.25'/>
+              <g>
+                <rect x='0' y='0' width='600' height='360' fill='none' stroke='%23222' stroke-width='8'/>
+                <g stroke='%23222' stroke-width='6'>
+                  <line x1='0' y1='60' x2='600' y2='60'/>
+                  <line x1='0' y1='120' x2='600' y2='120'/>
+                  <line x1='0' y1='180' x2='600' y2='180'/>
+                  <line x1='0' y1='240' x2='600' y2='240'/>
+                  <line x1='0' y1='300' x2='600' y2='300'/>
+                </g>
+              </g>
+              <g transform='translate(260,120)'>
+                <ellipse cx='40' cy='40' rx='30' ry='38' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+                <path d='M10,40 q30 60 60 0' fill='none' stroke='%23996b4e' stroke-width='8'/>
+                <rect x='20' y='70' rx='12' ry='12' width='40' height='70' fill='%23ffd777' stroke='%23222' stroke-width='6'/>
+                <!-- long hair -->
+                <path d='M30,110 q-20 30 30 40 q-30 -20 -10 -40' fill='%23996b4e' stroke='%23222' stroke-width='3'/>
+              </g>
+            </g>
+            <g transform='translate(940,240)'>
+              <polygon points='0,0 40,20 0,40' fill='%23e67e22' stroke='%23222' stroke-width='6'/>
+              <polygon points='-40,80 0,60 -40,40' fill='%23e74c3c' stroke='%23222' stroke-width='6'/>
+            </g>
+          </svg>`;
+
+      const svg17 = `data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+            <rect width='100%' height='100%' fill='%23e8fff3'/>
+            <!-- wall with small opening -->
+            <g transform='translate(220,180)'>
+              <rect x='0' y='0' width='760' height='360' fill='%23d1e7dd' stroke='%23222' stroke-width='8'/>
+              <rect x='360' y='140' width='40' height='80' fill='%23ffffff' stroke='%23222' stroke-width='6'/>
+            </g>
+            <!-- boy hand with flower/bee -->
+            <g transform='translate(500,270)'>
+              <rect x='-140' y='40' width='140' height='20' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <circle cx='-150' cy='50' r='10' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/>
+              <circle cx='-170' cy='30' r='10' fill='%23ffd166' stroke='%23222' stroke-width='4'/>
+            </g>
+            <text x='600' y='600' text-anchor='middle' font-family='Comic Sans MS' font-size='32' fill='%23222'>Cậu kiên nhẫn, dịu dàng — một chút ấm áp len qua khe tường.</text>
+          </svg>`;
+
+      const svg18 = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'><rect width='100%' height='100%' fill='%23e8fff3'/><g transform='translate(220,180)'><rect x='0' y='0' width='760' height='360' fill='%23d1e7dd' stroke='%23222' stroke-width='8'/><rect x='360' y='140' width='40' height='80' fill='%23ffffff' stroke='%23222' stroke-width='6'/></g><g transform='translate(500,270)'><rect x='-140' y='40' width='140' height='20' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/><circle cx='-150' cy='50' r='10' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/><circle cx='-170' cy='30' r='10' fill='%23ffd166' stroke='%23222' stroke-width='4'/></g><text x='600' y='600' text-anchor='middle' font-family='Comic Sans MS' font-size='32' fill='%23222'>Cậu kiên nhẫn, dịu dàng — một chút ấm áp len qua khe tường.</text></svg>`;
+
+      // Chapter 3–5 SVGs
+      const svg19 = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'><rect width='100%' height='100%' fill='%23f7e9ff'/><g transform='translate(500,300)'><rect x='0' y='0' width='200' height='120' rx='18' fill='%23ffe066' stroke='%23222' stroke-width='8'/><rect x='80' y='-40' width='40' height='40' rx='8' fill='%23ff8fab' stroke='%23222' stroke-width='6'/><rect x='95' y='-40' width='10' height='40' fill='%23fff' stroke='%23222' stroke-width='2'/><rect x='0' y='50' width='200' height='20' fill='%23ff8fab' stroke='%23222' stroke-width='2'/></g><text x='600' y='500' text-anchor='middle' font-family='Comic Sans MS' font-size='34' fill='%23222'>Chiếc hộp quà không gửi</text></svg>`;
+      const svg20 = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'><rect width='100%' height='100%' fill='%23e0f7fa'/><g transform='translate(300,200)'><polygon points='0,300 200,0 400,300' fill='%2397c1a9' stroke='%23222' stroke-width='8'/><polygon points='100,300 200,120 300,300' fill='%23cde6d0' stroke='%23222' stroke-width='6'/></g><text x='600' y='520' text-anchor='middle' font-family='Comic Sans MS' font-size='34' fill='%23222'>Ngọn núi chung — ước mơ gác lại</text></svg>`;
+      const svg21 = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'><rect width='100%' height='100%' fill='%23e3f2fd'/><g transform='translate(400,200)'><rect x='0' y='0' width='400' height='240' rx='24' fill='%23006d77' stroke='%23222' stroke-width='8'/><rect x='30' y='30' width='340' height='40' rx='8' fill='%23fff'/><rect x='30' y='90' width='340' height='20' rx='6' fill='%23fff'/><rect x='30' y='120' width='340' height='20' rx='6' fill='%23fff'/><rect x='30' y='150' width='220' height='20' rx='6' fill='%23fff'/></g><text x='600' y='520' text-anchor='middle' font-family='Comic Sans MS' font-size='34' fill='%23222'>Món quà code — câu chuyện của họ</text></svg>`;
+      const svg22 = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'><rect width='100%' height='100%' fill='%23fff6e5'/><g transform='translate(520,220)'><ellipse cx='80' cy='80' rx='60' ry='80' fill='%23ffe8cf' stroke='%23222' stroke-width='6'/><path d='M40,80 q60 100 120 0' fill='none' stroke='%23996b4e' stroke-width='10'/><ellipse cx='60' cy='120' rx='8' ry='16' fill='%2399d' opacity='0.5'/><ellipse cx='100' cy='120' rx='8' ry='16' fill='%2399d' opacity='0.5'/></g><text x='600' y='520' text-anchor='middle' font-family='Comic Sans MS' font-size='34' fill='%23222'>Giọt nước mắt hạnh phúc</text></svg>`;
+      const svg23 = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'><rect width='100%' height='100%' fill='%23e0e0e0'/><text x='600' y='400' text-anchor='middle' font-family='Comic Sans MS' font-size='60' fill='%23222'>To be continued...</text></svg>`;
+
+      const scenes = [
+        // Giới thiệu nhân vật
+        {
+          text: "<b>Nam</b>: Một chàng trai lập trình viên, yêu thích sự tự do, hiền lành, có chút nhút nhát.",
+          img: svg1,
+        },
+        {
+          text: '<b>Hiền (Oong)</b>: "🍃Tớ Là Oong🐝". Nhỏ nhắn, đáng yêu, luôn cho mọi người thấy sự mạnh mẽ của bản thân nhưng thật ra lại yếu đuối cần được bảo vệ heheh',
+          img: svg2,
+        },
+        // Mở đầu chương 1
+        { text: 'Chương 1: <b>Tiếng "Ting" Của Ngày 6 Tháng 8</b>', img: svg3 },
+        {
+          text: "Đêm muộn, Nam lướt TikTok để thư giãn sau những dòng code khô khan.",
+          img: svg1,
+        },
+        {
+          text: "Giữa hàng trăm video, không nhạc hot trend, nhảy nhót, một tài khoản tên <b>🍃Tớ Là Oong🐝</b> hiện lên. Chỉ là những clip hoa dại, mây trôi, chú chó nhỏ... Âm thanh mộc mạc của tự nhiên.",
+          img: svg2,
+        },
+        {
+          text: "Có một sự bình yên kỳ lạ. Nam tò mò nhấn vào xem, cảm nhận được một tâm hồn yêu thiên nhiên.",
+          img: svg3,
+        },
+        {
+          text: 'Anh bắt đầu theo dõi cô. Đôi lần nhắn xin ảnh: "Chào bạn, ảnh này đẹp quá, bạn cho mình xin ảnh gốc được không?"',
+        },
+        {
+          text: 'Oong vui vẻ đồng ý. Chỉ là những tương tác ngắn ngủi: "Cảm ơn bạn nhé." – "Không có gì ^^". Rồi thôi.',
+        },
+        {
+          text: "Nhiều tháng trôi qua. Việc ghé thăm trang cá nhân của Oong trở thành thói quen. Nam vẫn lặng lẽ xem, không dám bắt chuyện.",
+        },
+        { text: "Cho đến một ngày – <b>ngày 6 tháng 8</b>.", img: svg3 },
+        {
+          text: "Hiền đăng một story mới. Nam nhìn vào màn hình, trái tim bỗng đập nhanh hơn. Anh quyết định phải làm 1 điều gì đó khác.",
+          img: svg6,
+        },
+        {
+          text: 'Nam hít một hơi thật sâu, nhấn vào ô "Trả lời tin"... và gõ: <b>"Chào cậu."</b>',
+          img: svg5,
+        },
+        {
+          text: 'Anh gửi đi, chuẩn bị sẵn tâm lý sẽ bị "seen" mà không được trả lời.',
+        },
+        {
+          text: "Nhưng rồi... <b>Ting!</b> Âm thanh thông báo vang lên trong đêm tĩnh mịch.",
+          img: svg6,
+        },
+        { text: '🍃Tớ Là Oong🐝: "Chào bạn ^^"', img: svg7 },
+        {
+          text: 'Từ tin nhắn "Chào cậu" ngày 6/8, họ bắt đầu trò chuyện thật sự. Không chỉ "xin ảnh" nữa.',
+          img: svg8,
+        },
+        {
+          text: "Họ kể nhau nghe về một ngày của mình. Kinh ngạc nhận ra quá nhiều điểm chung: yêu thiên nhiên, động vật, chăm chỉ, thích trekking, thích tự do.",
+          img: svg7,
+        },
+        {
+          text: "Họ ở hai thành phố khác nhau. Không quá xa, nhưng đủ để mọi quan tâm chỉ gói gọn qua tin nhắn.",
+          img: svg8,
+        },
+        {
+          text: "Dù vậy, Nam biết, cô gái ấy đã âm thầm len lỏi vào trái tim vốn dĩ khô khan của mình.",
+          img: svg9,
+        },
+        // Chapter 2
+        { text: "Chương 2: <b>Bức Tường Vô Hình</b>", img: svg10 },
+        {
+          text: "Nam dần nhận ra cô gái nhỏ nhắn đáng yêu của mình không giống như anh từng tưởng tượng.",
+          img: svg11,
+        },
+        {
+          text: "Thế giới của Hiền là hiện thực khắc nghiệt hơn anh nghĩ. Công việc của cô vô cùng vất vả phải làm việc tại công trường.",
+          img: svg11,
+        },
+        {
+          text: "Khi những cô gái khác tan làm với váy áo thơm tho, thì Hiền trở về nhà với quần áo bảo hộ lấm lem và cơ thể mệt rã rời.",
+          img: svg11,
+        },
+        {
+          text: "Sáng sớm đi làm, tối khuya mới về. Tối ngày chỉ có làm, làm và làm.",
+          img: svg12,
+        },
+        {
+          text: "Nhưng dù mệt mỏi đến đâu, cô vẫn dành thời gian trả lời tin nhắn của Nam. Ánh sáng từ màn hình điện thoại trong căn phòng trọ nhỏ là niềm an ủi phần nào của cô.",
+          img: svg13,
+        },
+        {
+          text: "Nam không biết rằng, cô gái luôn trả lời tin nhắn một cách vui vẻ ấy thường xuyên bỏ bữa, tắm gội lúc nửa đêm.",
+          img: svg14,
+        },
+        {
+          text: "Và điều anh càng không biết, cô gái mạnh mẽ ấy rất hay khóc một mình.",
+          img: svg15,
+        },
+        {
+          text: "Nam cảm nhận được điều đó. Anh biết cô cần được che chở, cần được nâng niu. Nhưng Hiền luôn tự bao bọc mình bằng một bức tường lớn, sợ hãi thế giới, sợ hãi mọi thứ xung quanh, sợ mình không xứng đáng với sự quan tâm của anh.",
+          img: svg16,
+        },
+        // ...existing code...
+        // Chapter 3
+        { text: "<b>Chương 3: Những Món Quà Không Gửi</b>", img: svg19 },
+        {
+          text: "Sự quan tâm của Nam không chỉ còn là lời nói. Nó biến thành một nỗi sợ thực sự.",
+          img: svg19,
+        },
+        {
+          text: '"Cậu phải ăn uống đúng giờ. Đừng làm việc quá sức nữa, hâmm ạ."',
+          img: svg19,
+        },
+        {
+          text: "Nam lên mạng, đọc các bài viết về sức khỏe, sữa dinh dưỡng, khăn quàng cổ thật ấm. Anh muốn tặng cho cô, dù chỉ là một phần nhỏ.",
+          img: svg19,
+        },
+        {
+          text: "Anh cẩn thận gói ghém mọi thứ vào một chiếc hộp. Nhưng rồi, anh nhận ra mình không có địa chỉ của cô. Và anh không dám hỏi.",
+          img: svg19,
+        },
+        {
+          text: "Chiếc hộp ấm áp ấy, cứ nằm mãi trên bàn làm việc của anh, trở thành một món quà không thể gửi.",
+          img: svg19,
+        },
+        // Chapter 4
+        { text: "<b>Chương 4: Món Quà 20/10</b>", img: svg20 },
+        {
+          text: '"Tớ sắp có một kỳ nghỉ lễ dài ngày," Nam nhắn tin, lòng đầy phấn khích. "Tớ định đi leo Tà Chì Nhù, chỗ lần trước chúng ta cùng xem ảnh ấy."',
+          img: svg20,
+        },
+        {
+          text: 'Nam không dám hỏi thẳng "Cậu có muốn đi cùng tớ không?". Anh chọn một cách ý tứ hơn: "Tiếc là ngọn núi này ở xa cậu quá. Phải chi chúng ta có thể cùng đi nhỉ?"',
+          img: svg20,
+        },
+        {
+          text: 'Hiền hiểu ý anh. Cô muốn đi, nhưng thực tại lại kéo cô lại. "Ước gì tớ cũng được đi. Nhưng... công việc của tớ... chắc là không xin nghỉ được rồi."',
+          img: svg20,
+        },
+        {
+          text: "Lời hứa về một ngọn núi chung được gác lại. Nam nhìn chiếc hộp quà không gửi được trên bàn, rồi nhìn vào màn hình code. Sắp đến ngày 20/10/2025.",
+          img: svg21,
+        },
+        {
+          text: "Anh nhận ra mình có thể tạo ra một món quà khác. Một món quà có thể vượt qua mọi khoảng cách, có thể gửi đi ngay lập tức.",
+          img: svg21,
+        },
+        {
+          text: 'Thế là, chàng trai lập trình ấy bắt đầu "code" miệt mài. Anh "code" ra một câu chuyện — chính câu chuyện của mình.',
+          img: svg21,
+        },
+        {
+          text: 'Đúng ngày 20/10, anh gửi cho cô một đường link: "Tặng Oong. Món quà đầu tiên của tớ. Chúc cậu một ngày thật vui vẻ, bớt mệt mỏi."',
+          img: svg21,
+        },
+        {
+          text: "Hiền mở ra. Cô đọc, và ....... (hehe tớ đợi rì viu của cậu)",
+          img: svg22,
+        },
+        // Chapter 5
+        { text: "<b>Chương 5: Cuộc Gặp Gỡ Định Mệnh</b>", img: svg23 },
+        {
+          img: svg23,
+        },
+        { text: "<b>To be continued...</b>", img: svg23 },
+      ];
+
+      let index = 0;
+      let isTyping = false;
+      let typingTimer = null;
+
+      const storyDiv = document.getElementById("story");
+      const imgEl = document.getElementById("sceneImg");
+      const nextBtn = document.getElementById("nextBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const progress = document.getElementById("progress");
+      const panel = document.getElementById("panel");
+
+      function typewriterHTML(target, html, speed = 22) {
+        if (typingTimer) clearTimeout(typingTimer);
+        target.innerHTML = "";
+        isTyping = true;
+        let i = 0;
+        const step = () => {
+          if (!isTyping) return; // typing cancelled
+          if (i >= html.length) {
+            isTyping = false;
+            return;
+          }
+          if (html[i] === "<") {
+            const close = html.indexOf(">", i);
+            if (close === -1) {
+              target.innerText += html.slice(i);
+              isTyping = false;
+              return;
+            }
+            target.innerHTML += html.slice(i, close + 1);
+            i = close + 1;
+            step();
+            return;
+          }
+          target.innerHTML += html[i];
+          i++;
+          typingTimer = setTimeout(step, speed);
+        };
+        step();
+      }
+
+      function setScene(i) {
+        const scene = scenes[i];
+        if (!scene) return;
+        imgEl.src = scene.img;
+        imgEl.alt = `scene-${i + 1}`;
+        storyDiv.style.opacity = 0;
+        setTimeout(() => {
+          storyDiv.style.opacity = 1;
+          typewriterHTML(storyDiv, scene.text);
+        }, 150);
+        renderProgress(i);
+        updateControls();
+      }
+
+      function renderProgress(activeIndex) {
+        progress.innerHTML = "";
+        for (let i = 0; i < scenes.length; i++) {
+          const d = document.createElement("div");
+          d.className = "dot" + (i === activeIndex ? " active" : "");
+          d.title = `Cảnh ${i + 1}`;
+          d.setAttribute("role", "button");
+          d.tabIndex = 0;
+          d.addEventListener("click", () => {
+            index = i;
+            setScene(index);
+          });
+          d.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              index = i;
+              setScene(index);
+            }
+          });
+          progress.appendChild(d);
+        }
+      }
+
+      function updateControls() {
+        prevBtn.disabled = index === 0;
+        nextBtn.textContent = index === scenes.length - 1 ? "Kết ➜" : "Tiếp ➜";
+      }
+
+      function completeOrNext() {
+        if (isTyping) {
+          // skip typing
+          isTyping = false;
+          if (typingTimer) clearTimeout(typingTimer);
+          storyDiv.innerHTML = scenes[index].text;
+        } else {
+          nextPart();
+        }
+      }
+
+      function nextPart() {
+        if (index < scenes.length - 1) {
+          index++;
+          setScene(index);
+        } else {
+          // restart
+          index = 0;
+          setScene(index);
+        }
+      }
+
+      function prevPart() {
+        if (index > 0) {
+          index--;
+          setScene(index);
+        }
+      }
+
+      // Keyboard navigation
+      window.addEventListener("keydown", (e) => {
+        const key = e.key;
+        if ([" ", "Spacebar", "Enter", "ArrowRight"].includes(key)) {
+          e.preventDefault();
+          completeOrNext();
+        } else if (key === "ArrowLeft") {
+          e.preventDefault();
+          if (isTyping) {
+            isTyping = false;
+            if (typingTimer) clearTimeout(typingTimer);
+            storyDiv.innerHTML = scenes[index].text;
+          } else {
+            prevPart();
+          }
+        }
+      });
+
+      // Click to skip typing
+      panel.addEventListener("click", () => completeOrNext());
+
+      // Init: preload images, then show first scene
+      scenes.forEach((s) => {
+        const im = new Image();
+        im.src = s.img;
+      });
+      setScene(index);
+    </script>
+  </body>
+</html>
+<!-- đây là nội dung của chương 1 -->
